@@ -1,9 +1,10 @@
 package com.news.rest.controller;
 
+import com.news.rest.dto.AuthenticationResponse;
+import com.news.rest.dto.LoginRequest;
 import com.news.rest.dto.RegisterRequest;
 import com.news.rest.service.AuthService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,4 +28,9 @@ public class AuthController {
         authService.verifyAccount(token);
         return new ResponseEntity<>("Account activated successfully", OK);
     }
+
+    @PostMapping("/login")
+        public AuthenticationResponse login(@RequestBody LoginRequest loginRequest){
+            return authService.login(loginRequest);
+        }
 }
