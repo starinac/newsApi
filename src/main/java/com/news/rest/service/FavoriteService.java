@@ -1,6 +1,7 @@
 package com.news.rest.service;
 
 import com.news.rest.dto.FavoriteDto;
+import com.news.rest.exceptions.NewsException;
 import com.news.rest.exceptions.PostNotFoundException;
 import com.news.rest.mapper.FavoriteMapper;
 import com.news.rest.model.Favorite;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -30,6 +32,10 @@ public class FavoriteService {
     public void save(FavoriteDto favoriteDto){
         Post post = postRepository.findById(favoriteDto.getPostId())
                 .orElseThrow(() -> new PostNotFoundException(favoriteDto.getPostId().toString()));
+        Optional<Favorite> favoriteByPostAndUser = favoriteRepository.findByPostAndUser(post, authService.getCurrentUser());
+        if(favoriteByPostAndUser.isPresent()){
+            throw new NewsException("You have already added this post to favorites");
+        }
         Favorite favorite = favoriteMapper.map(favoriteDto, post, authService.getCurrentUser());
         favoriteRepository.save(favorite);
     }

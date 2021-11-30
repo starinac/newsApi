@@ -19,7 +19,7 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @PostMapping
-    public ResponseEntity<Void> createComment(@RequestBody FavoriteDto favoriteDto){
+    public ResponseEntity<Void> addFavorite(@RequestBody FavoriteDto favoriteDto){
         favoriteService.save(favoriteDto);
         return new ResponseEntity<>(CREATED);
     }
