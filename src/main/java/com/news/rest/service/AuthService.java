@@ -84,6 +84,13 @@ public class AuthService {
     }
 
     @Transactional
+    public void updatePayment(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NewsException("User not find with name - " + username));
+        user.setPayed(true);
+        userRepository.save(user);
+    }
+
+    @Transactional
     protected void fetchUserAndEnable(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new NewsException("User not find with name - " + username));
