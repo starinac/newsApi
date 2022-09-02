@@ -30,6 +30,9 @@ public class Post {
     private String content;
     @Nullable
     private String source;
+    @Lob
+    @Nullable
+    private byte[] image;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;

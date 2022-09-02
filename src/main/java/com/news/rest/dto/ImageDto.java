@@ -11,12 +11,10 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostDto {
+public class ImageDto {
+    private Long id;
+    private String name;
+    private String type;
+    private byte[] pic;
     private Long postId;
-    private String title;
-    private String content;
-    private String source;
-    private Instant datePublished;
-    private String imageUrl;
-    private byte[] image;
 }

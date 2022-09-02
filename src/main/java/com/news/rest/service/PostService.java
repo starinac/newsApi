@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -31,6 +32,7 @@ public class PostService {
     @Transactional
     public Post save(PostDto postDto){
         User currentUser = authService.getCurrentUser();
+        postDto.setDatePublished(Instant.now());
         return postRepository.save(postMapper.map(postDto, currentUser));
     }
 

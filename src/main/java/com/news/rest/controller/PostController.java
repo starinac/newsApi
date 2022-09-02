@@ -24,7 +24,7 @@ public class PostController {
     private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody PostDto postDto){
+    public ResponseEntity<Post> createPost(@RequestBody PostDto postDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(postService.save(postDto));
     }
