@@ -29,4 +29,10 @@ public class FavoriteController {
         return ResponseEntity.status(OK)
                 .body(favoriteService.getAllFavoritesForUser(userName));
     }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> removeFavorite(@PathVariable Long postId) {
+        favoriteService.removeFavorite(postId);
+        return  new ResponseEntity<>(OK);
+    }
 }

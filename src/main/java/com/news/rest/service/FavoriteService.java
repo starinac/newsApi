@@ -32,8 +32,8 @@ public class FavoriteService {
     public void save(FavoriteDto favoriteDto){
         Post post = postRepository.findById(favoriteDto.getPostId())
                 .orElseThrow(() -> new PostNotFoundException(favoriteDto.getPostId().toString()));
-        Optional<Favorite> favoriteByPostAndUser = favoriteRepository.findByPostAndUser(post, authService.getCurrentUser());
-        if(favoriteByPostAndUser.isPresent()){
+        Favorite favoriteByPostAndUser = favoriteRepository.findByPostAndUser(post, authService.getCurrentUser());
+        if(favoriteByPostAndUser != null){
             throw new NewsException("You have already added this post to favorites");
         }
         Favorite favorite = favoriteMapper.map(favoriteDto, post, authService.getCurrentUser());
@@ -46,5 +46,12 @@ public class FavoriteService {
         return favoriteRepository.findAllByUser(user)
                 .stream()
                 .map(favoriteMapper::mapToDto).collect(toList());
+    }
+
+    public void removeFavorite(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
+        Favorite favoriteByPostAndUser = favoriteRepository.findByPostAndUser(post, authService.getCurrentUser());
+        favoriteRepository.delete(favoriteByPostAndUser);
     }
 }

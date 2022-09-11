@@ -3,16 +3,20 @@ package com.news.rest.service;
 import com.news.rest.dto.PostDto;
 import com.news.rest.exceptions.NewsException;
 import com.news.rest.mapper.PostMapper;
+import com.news.rest.model.Image;
 import com.news.rest.model.Post;
 import com.news.rest.model.User;
 import com.news.rest.repository.PostRepository;
 import com.news.rest.repository.UserRepository;
+import com.news.rest.util.ImageUtility;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 
@@ -30,7 +34,7 @@ public class PostService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Post save(PostDto postDto){
+    public Post save(PostDto postDto) {
         User currentUser = authService.getCurrentUser();
         postDto.setDatePublished(Instant.now());
         return postRepository.save(postMapper.map(postDto, currentUser));

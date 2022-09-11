@@ -20,13 +20,6 @@ public class Image {
     private String type;
     @Lob
     private byte[] pic;
-    @JoinColumn(name = "postid", referencedColumnName = "postId")
     private Long postId;
 
-    public Image(String name, String type, byte[] pic, Long postId){
-        this.name = name;
-        this.type = type;
-        this.pic = pic;
-        this.postId = postId;
-    }
 }

@@ -1,5 +1,6 @@
 package com.news.rest.dto;
 
+import com.news.rest.model.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class PostDto {
     private String source;
     private Instant datePublished;
     private String imageUrl;
-    private byte[] image;
+    private Image image;
 }
