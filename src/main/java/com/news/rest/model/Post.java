@@ -36,6 +36,9 @@ public class Post {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
+    @OneToOne
+    @JoinColumn(name = "categoryId", referencedColumnName = "id")
+    private Category category;
     private Instant datePublished;
 
 }

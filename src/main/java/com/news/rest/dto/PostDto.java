@@ -20,4 +20,5 @@ public class PostDto {
     private Instant datePublished;
     private String imageUrl;
     private Image image;
+    private Long categoryId;
 }

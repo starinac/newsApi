@@ -56,6 +56,17 @@ public class PostController {
                 .body(post);
     }
 
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<PostDto>> getPostForCategory(@PathVariable String category){
+        List<PostDto> posts = postService.getAllForCategory(category);
+        for (PostDto post:
+                posts) {
+            post.setImage(imageRepository.getByPostId(post.getPostId()));
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(posts);
+    }
+
     @GetMapping("by-user/{name}")
     public ResponseEntity<List<PostDto>> getPostsByUsername(@PathVariable String name) {
         return ResponseEntity

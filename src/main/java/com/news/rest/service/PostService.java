@@ -3,9 +3,11 @@ package com.news.rest.service;
 import com.news.rest.dto.PostDto;
 import com.news.rest.exceptions.NewsException;
 import com.news.rest.mapper.PostMapper;
+import com.news.rest.model.Category;
 import com.news.rest.model.Image;
 import com.news.rest.model.Post;
 import com.news.rest.model.User;
+import com.news.rest.repository.CategoryRepository;
 import com.news.rest.repository.PostRepository;
 import com.news.rest.repository.UserRepository;
 import com.news.rest.util.ImageUtility;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -32,12 +35,22 @@ public class PostService {
     private final AuthService authService;
     private final PostMapper postMapper;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     public Post save(PostDto postDto) {
         User currentUser = authService.getCurrentUser();
+        Optional<Category> category = categoryRepository.findById(postDto.getCategoryId());
+        Category category1 = null;
+        if(category.isPresent()){
+            category1 = Category.builder()
+                    .id(category.get().getId())
+                    .name(category.get().getName())
+                    .parentId(category.get().getParentId())
+                    .build();
+        }
         postDto.setDatePublished(Instant.now());
-        return postRepository.save(postMapper.map(postDto, currentUser));
+        return postRepository.save(postMapper.map(postDto, currentUser, category1));
     }
 
     @Transactional(readOnly = true)
@@ -59,6 +72,14 @@ public class PostService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         return postRepository.findByUser(user)
+                .stream()
+                .map(postMapper::mapPostToDto)
+                .collect(toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostDto> getAllForCategory(String category) {
+        return postRepository.findAllByCategory_Name(category)
                 .stream()
                 .map(postMapper::mapPostToDto)
                 .collect(toList());
