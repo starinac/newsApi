@@ -30,6 +30,10 @@ public class Post {
     private String content;
     @Nullable
     private String source;
+    @Nullable
+    private String imageUrl;
+    @Nullable
+    private String urlToPost;
     @OneToOne
     @JoinColumn(name = "imageId", referencedColumnName = "id")
     private Image image;
