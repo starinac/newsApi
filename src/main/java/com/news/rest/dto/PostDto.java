@@ -18,6 +18,7 @@ public class PostDto {
     private String content;
     private String source;
     private Instant datePublished;
+    private Integer commentCount;
     private String imageUrl;
     private String urlToPost;
     private Image image;
