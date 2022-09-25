@@ -18,5 +18,6 @@ public interface FavoriteMapper {
 
     @Mapping(target = "postId", expression = "java(favorite.getPost().getPostId())")
     @Mapping(target = "userName", expression = "java(favorite.getUser().getUsername())")
+    @Mapping(target = "post", source = "post")
     FavoriteDto mapToDto(Favorite favorite);
 }

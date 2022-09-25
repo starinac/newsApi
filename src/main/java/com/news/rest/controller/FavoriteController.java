@@ -1,8 +1,10 @@
 package com.news.rest.controller;
 
 import com.news.rest.dto.FavoriteDto;
+import com.news.rest.repository.ImageRepository;
 import com.news.rest.service.FavoriteService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,9 @@ import static org.springframework.http.HttpStatus.OK;
 @AllArgsConstructor
 public class FavoriteController {
 
+    @Autowired
+    ImageRepository imageRepository;
+
     private final FavoriteService favoriteService;
 
     @PostMapping
@@ -26,8 +31,13 @@ public class FavoriteController {
 
     @GetMapping("/{userName}")
     public ResponseEntity<List<FavoriteDto>> getAllFavoritesForUser(@PathVariable String userName){
+        List<FavoriteDto> favorites = favoriteService.getAllFavoritesForUser(userName);
+        for (FavoriteDto favorite:
+                favorites) {
+            favorite.getPost().setImage(imageRepository.getByPostId(favorite.getPostId()));
+        }
         return ResponseEntity.status(OK)
-                .body(favoriteService.getAllFavoritesForUser(userName));
+                .body(favorites);
     }
 
     @DeleteMapping("/{postId}")

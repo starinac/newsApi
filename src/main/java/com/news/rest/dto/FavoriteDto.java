@@ -14,4 +14,5 @@ public class FavoriteDto {
     private Long postId;
     private Instant dateAdded;
     private String userName;
+    private PostDto post;
 }
