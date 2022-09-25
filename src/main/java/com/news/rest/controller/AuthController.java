@@ -34,6 +34,11 @@ public class AuthController {
         return new ResponseEntity<>("Account activated successfully", OK);
     }
 
+    @GetMapping("check/{username}")
+    public AuthenticationResponse chackPayment(@PathVariable String username){
+        return authService.checkPayment(username);
+    }
+
     @PostMapping("/login")
         public AuthenticationResponse login(@RequestBody LoginRequest loginRequest){
             return authService.login(loginRequest);

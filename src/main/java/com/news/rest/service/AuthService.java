@@ -126,4 +126,12 @@ public class AuthService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
+
+    public AuthenticationResponse checkPayment(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NewsException("User not find with name - " + username));
+        return AuthenticationResponse.builder()
+                .payed(user.isPayed())
+                .build();
+
+    }
 }
